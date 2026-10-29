@@ -1,0 +1,30 @@
+body{
+    margin: 0;
+    padding:0;
+}
+
+.header{
+    display: flex;
+    height: 200px;
+}
+.header img{
+    height: 200px;
+}
+.header h3{
+    display: block;
+    font-size: 54px;
+    margin: auto;
+}
+.color1{
+    color: #2257aa;
+}
+.color2{
+    color: #31a344;
+}
+.color3{
+    color: #dda83a;
+}
+ul li{
+    float: left;
+    list-style-type:none;
+}
