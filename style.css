@@ -24,7 +24,11 @@ body{
 .color3{
     color: #dda83a;
 }
+
 ul li{
     float: left;
     list-style-type:none;
+    padding-left:90px;
+    padding-right: 90px;
+    font-size: 25px;
 }
