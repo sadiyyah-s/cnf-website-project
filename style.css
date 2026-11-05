@@ -1,14 +1,15 @@
 
 .menu {
-    margin-left: 10px;
-    position: absolute;
+    margin-left: auto;
+    margin-right: 100px;
+    position: relative;
     display: flex;
     flex-direction: column;
     width: auto;
     height: auto;
     background: #000c2a;
     border-radius: 0.75rem;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .checkbox1 {
@@ -51,20 +52,36 @@
     transform-origin: top left;
 }
 
-.menu.active,
-.menu-list.active {
+.menu-list {
+    position: absolute;
+    top: 100%;
+    right: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    height: auto;
-    width: auto;
-    padding: 10px;
+    width: max-content;
+    min-width: 220px;
+    max-height: 0;
+    padding: 0 10px;
+    margin: 0;
     list-style-type: none;
+    background: #000c2a;
+    border-radius: 0 0 0.75rem 0.75rem;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: max-height 0.4s ease, padding 0.4s ease,
+                opacity 0.3s ease, transform 0.3s ease,
+                visibility 0.3s ease;
 }
 
-.menu-list {
-    width: 8%;
-    display: none;
+.checkbox1:checked ~ .menu-list {
+    max-height: 400px;
+    padding: 10px;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .menu a {
@@ -159,6 +176,7 @@ body {
     display: flex;
     height: 200px;
     background-color: white;
+    align-items: center;
 }
 
 .header img {
