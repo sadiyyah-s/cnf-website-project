@@ -86,14 +86,16 @@ ul a{
 .introduction{
     padding-left:40px;
     padding-top: 20px;
+    display: flex;
 }
 
 .introduction h4{
-    font-size: 30px;
+    font-size: 40px;
 }
 
 .introduction p{
-    font-size: 20px;
+    font-size: 30px;
+    margin-bottom: 60px;
 }
 
 .introduction #button{
@@ -103,9 +105,27 @@ ul a{
     margin-right:30px;
     background-color: #dda83a;
     text-decoration: none;
+    color:black
 }
 
-.introduction a{
+.introduction #link{
     font-size: 20px;
+    padding:20px;
+    border-radius: 90px;
+    margin-right:30px;
+    text-decoration:none;
+    border: 1px solid #2257aa;
+    color:#2257aa;
+}
+.introduction #link:hover{
+    background: #2257aa;
+    color: white;
+}
 
+.introduction .img{
+    width: 400px;
+    height:400px;
+    background-color: orangered;
+    margin-top: 40px;
+    margin-left: 100px;
 }
