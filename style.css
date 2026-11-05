@@ -12,7 +12,7 @@ body{
 }
 .header h3{
     display: block;
-    font-size: 54px;
+    font-size: 60px;
     margin: auto;
 }
 .color1{
@@ -25,15 +25,72 @@ body{
     color: #dda83a;
 }
 
-ul li{
-    float: left;
-    list-style-type:none;
-    padding-left:90px;
-    padding-right: 90px;
-    font-size: 25px;
+ul{
+    display: flex;
+    padding: 0 24px;
+    list-style: none;
+    margin: 0;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
-ul li a{
+ul li{
+    display: inline-block;
+    list-style-type:none;
+    padding:10px 50px;
+    font-size: 30px;
+    border:1px black solid;
+    border-radius: 50px;
+    white-space: nowrap;
+}
+
+@media(max-width:1100px){
+    .header h3{
+        font-size: 54px;
+    }
+    ul li{
+        padding: 10px 20px;
+        font-size: 25px;
+    }
+}
+
+@media(max-width:700px){
+    ul{
+        justify-content: space-between;
+        padding: 0px 10px;
+    }
+    ul li{
+        padding: 6px 12px;
+        font-size: 20px;
+    }
+}
+
+
+@media(max-width:650px){
+    ul{
+        justify-content: space-between;
+        padding: 0px 10px;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    ul li{
+        padding: 6px 12px;
+        font-size: 16px;
+    }
+}
+ul a{
     color: black;
     text-decoration: none;
+}
+
+.introduction{
+    
+}
+
+.introduction h4{
+    font-size: 30px;
+}
+
+.introduction p{
+    font-size: 20px;
 }
