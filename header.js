@@ -19,6 +19,7 @@ document.body.insertAdjacentHTML('afterbegin',`
             <a href="survey.html"><li>Survey</li></a>
             <a href="template.html"><li>Templates</li></a>
             <a href="mailing-list.html"><li>Mailing-list</li></a>
+            <a href="about.html"><li>About Us</li></a>
         </ul>
 
     </div>
