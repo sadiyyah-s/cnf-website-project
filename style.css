@@ -95,3 +95,17 @@ ul a{
 .introduction p{
     font-size: 20px;
 }
+
+.introduction #button{
+    font-size: 20px;
+    padding:20px;
+    border-radius: 90px;
+    margin-right:30px;
+    background-color: #dda83a;
+    text-decoration: none;
+}
+
+.introduction a{
+    font-size: 20px;
+
+}
