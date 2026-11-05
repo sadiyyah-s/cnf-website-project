@@ -31,8 +31,8 @@ body{
     position: absolute;
     display: flex;
     flex-direction:column;
-    width: 5vw;
-    height:5vw;
+    width:auto;
+    height:auto;
     background: #000c2a;
     border-radius: 0.75rem;
     overflow: hidden;
@@ -97,7 +97,7 @@ a {
     padding: 0 3px 3px 3px;
     border-bottom: 2px solid transparent;
     font-family: system-ui, sans-serif;
-    font-size: max(1rem, 2cqi);
+    font-size: max(1.25rem, 2cqi);
     color: white;
     text-decoration: none;
     transition: border 0.3s ease-in-out;
@@ -151,4 +151,23 @@ a:hover {
     background-color: orangered;
     margin-top: 40px;
     margin-left: 100px;
+}
+
+.whats-new{
+    padding-left: 40px;
+    padding-top: 40px;
+}
+
+.news-container{
+    display: flex;
+}
+
+.news-item{
+    width: 400px;
+    height: 400px;
+    background-color: #31a344;
+    color:ivory;
+    padding: 20px;
+    margin-right: 40px;
+    border-radius: 20px;
 }
