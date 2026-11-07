@@ -15,6 +15,8 @@ document.body.insertAdjacentHTML('afterbegin',`
                     <span class="bar bar1"></span>
                     <span class="bar bar2"></span>
                     <span class="bar bar3"></span>
+                    <!-- Hidden width controller that expands the button layout when open -->
+                    <span class="size-lock-track">Mailing-list</span>
                 </div>
             </label>
 

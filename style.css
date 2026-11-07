@@ -1,15 +1,19 @@
-
 .menu {
     margin-left: auto;
     margin-right: 100px;
     position: relative;
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     width: auto;
     height: auto;
     background: #000c2a;
     border-radius: 0.75rem;
     overflow: visible;
+    transition: border-radius 0.2s ease;
+}
+
+.menu.active {
+    border-radius: 0.75rem 0.75rem 0 0;
 }
 
 .checkbox1 {
@@ -17,16 +21,46 @@
 }
 
 .button {
-    display: grid;
-    place-items: center;
-    width: 3.5rem;
+    position: relative;
+    /* --- KEY FIX: Force content items to stack vertically as a column --- */
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    justify-content: space-between; /* Evenly spaces out your three hamburger bars */
+    min-width: 3.5rem;
+    width: 100%;
     height: 3.25rem;
-    padding: 10px;
+    padding: 12px 10px; /* Adjusted padding to give the stacked bars correct sizing */
     background: #000c2a;
+    box-sizing: border-box;
+    border-radius: 0.75rem;
+    transition: padding 0.2s ease;
+}
+
+.menu.active .button {
+    border-radius: 0.75rem 0.75rem 0 0;
+    padding: 12px 15px; 
 }
 
 .button:hover {
     cursor: pointer;
+}
+
+/* --- The Hidden Width Controller (Kept intact) --- */
+.size-lock-track {
+    display: block;
+    width: 0;
+    height: 0;
+    visibility: hidden;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: system-ui, sans-serif;
+    font-size: max(1.25rem, 2cqi);
+}
+
+.menu.active .size-lock-track {
+    width: auto;
+    height: auto;
 }
 
 .button .bar {
@@ -37,19 +71,26 @@
     transition: all 0.3s ease-in-out;
 }
 
-.checkbox1:checked + label > .button1 > .bar1 {
-    transform: translate(0, 0.75rem) rotate(270deg) scaleX(0.35) scaleY(1.75);
-    transform-origin: bottom right;
+/* --- KEY FIX: Lock bars to cross over each other dead-center when menu is active --- */
+.menu.active .bar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -0.125rem; /* Half of bar height (0.25rem) to center vertically */
+    margin-left: -1rem;    /* Half of bar width (2rem) to center horizontally */
 }
 
-.checkbox1:checked + label > .button1 > .bar2 {
-    transform: translate(0, 0) rotate(-270deg) scaleX(0.35) scaleY(1.75);
-    transform-origin: 50% 50%;
+/* Your exact bar cross-over transformation coordinates */
+.menu.active .bar1 {
+    transform: translate(0, 0) rotate(45deg); /* Adjusted slightly for absolute alignment precision */
 }
 
-.checkbox1:checked + label > .button1 > .bar3 {
-    transform: translate(0, -0.75rem) rotate(270deg) scaleX(0.35) scaleY(1.75);
-    transform-origin: top left;
+.menu.active .bar2 {
+    opacity: 0; /* Smoothly disappears the middle bar */
+}
+
+.menu.active .bar3 {
+    transform: translate(0, 0) rotate(-45deg); /* Adjusted slightly for absolute alignment precision */
 }
 
 .menu-list {
@@ -59,10 +100,9 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    width: max-content;
-    min-width: 100px;
+    width: 100%;
     max-height: 0;
-    padding: 0 10px;
+    padding: 0 15px;
     margin: 0;
     list-style-type: none;
     background: #000c2a;
@@ -74,24 +114,27 @@
     transition: max-height 0.4s ease, padding 0.4s ease,
                 opacity 0.3s ease, transform 0.3s ease,
                 visibility 0.3s ease;
+    box-sizing: border-box;
 }
 
-.checkbox1:checked ~ .menu-list {
+.menu-list.active {
     max-height: 400px;
-    padding: 10px;
+    padding: 10px 15px;
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
 }
 
 .menu a {
-    padding: 0 3px 3px 3px;
+    padding: 6px 0;
     border-bottom: 2px solid transparent;
     font-family: system-ui, sans-serif;
     font-size: max(1.25rem, 2cqi);
     color: white;
     text-decoration: none;
     transition: border 0.3s ease-in-out;
+    display: block;
+    white-space: nowrap;
 }
 
 .menu a:hover {
