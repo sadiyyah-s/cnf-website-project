@@ -10,6 +10,8 @@
     border-radius: 0.75rem;
     overflow: visible;
     transition: border-radius 0.2s ease;
+    position: relative;
+    z-index: 1001;
 }
 
 .menu.active {
@@ -111,10 +113,10 @@
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
-    transition: max-height 0.4s ease, padding 0.4s ease,
-                opacity 0.3s ease, transform 0.3s ease,
-                visibility 0.3s ease;
+    transition: max-height 0.4s ease, padding 0.4s ease,opacity 0.3s ease, transform 0.3s ease,visibility 0.3s ease;
     box-sizing: border-box;
+    position: absolute;
+    z-index: 1002;
 }
 
 .menu-list.active {
@@ -220,6 +222,9 @@ body {
     height: 200px;
     background-color: white;
     align-items: center;
+    position: relative;
+    z-index: 1000;
+    overflow: visible;
 }
 
 .header img {
@@ -247,6 +252,8 @@ body {
 .navbar {
     background-color: white;
     border-bottom: 3px solid black;
+    position: relative;
+    z-index: 100;
 }
 
 hr {
@@ -353,6 +360,8 @@ hr {
     max-height: 1000px;
     border-color: #4D4B59;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 11;
 }
 
 .information {
@@ -379,9 +388,10 @@ hr {
 }
 
 main u h1 {
-    display: flex;
-    justify-content: center;
-    margin-top: 75px;
+    color: #191a1a;
+    text-shadow: none;
+    text-decoration: none;
+    text-align: center;
 }
 
 :root {
@@ -391,12 +401,12 @@ main u h1 {
     --text-1: #1B5E20;
     --text-2: #174A7E;
     --text-3: #765600;
-    --Ccolour-1: #a7c59c;
-    --Ccolour-2: #92bad8;
-    --Ccolour-3: #ead79e;
-    --Bcolour-1: #84b971;
-    --Bcolour-2: #598db4;
-    --Bcolour-3: #d6bc6e;
+    --Ccolour-1: #cfe7c9;
+    --Ccolour-2: #aac6db;
+    --Ccolour-3: #d7cfb5;
+    --Bcolour-1: #EAF2E7;
+    --Bcolour-2: #afc3d3;
+    --Bcolour-3: #e8e1ca;
 }
 
 .accordian:nth-of-type(3n+1) b {
@@ -428,7 +438,7 @@ main u h1 {
     margin: 3px auto 0;
     margin-top: 0;
     padding-top: 20px;
-    background-color: #f5f5f5;
+    background-color: #F8FAF7;
     border: 2px solid black;
     border-radius: 15px;
     text-align: center;
@@ -473,4 +483,27 @@ body.colour-3 {
 .navbar ul li:hover{
     transition: 0.2s;
     background-color: #92bad8;
+}
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 10;
+}
+
+body:has(.Info.active)::before {
+    opacity: 0.6;
+    visibility: visible;
+}
+
+.accordian,
+.Info {
+    position: relative;
+    z-index: 11;
 }
