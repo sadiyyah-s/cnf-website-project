@@ -10,76 +10,25 @@
 <body>
     <script src="header.js"></script>
     <div class="container">
-        <table class="calendar">
-            <tr>
-                <th colspan="1">&lt;</th>
-                <th colspan="5" class="month-year">Nov 2026</th>
-                <th colspan="1">&gt;</th>
-            </tr>
-            <tr class="days-of-week">
-                <td>Mon</td>
-                <td>Tue</td>
-                <td>Wed</td>
-                <td>Thu</td>
-                <td>Fri</td>
-                <td>Sat</td>
-                <td>Sun</td>
-            </tr>
-            <tr class="days">
-                <td>26</td>
-                <td>27</td>
-                <td>28</td>
-                <td>29</td>
-                <td>30</td>
-                <td>31</td>
-                <td>1</td>
-            </tr>
-            <tr class="days">
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-                <td>8</td>
-            </tr>
-            <tr class="days">
-                <td>9</td>
-                <td>10</td>
-                <td>11</td>
-                <td>12</td>
-                <td>13</td>
-                <td>14</td>
-                <td>15</td>
-            </tr>
-            <tr class="days">
-                <td>16</td>
-                <td>17</td>
-                <td>18</td>
-                <td>19</td>
-                <td>20</td>
-                <td>21</td>
-                <td>22</td>
-            </tr>
-            <tr class="days">
-                <td>23</td>
-                <td>24</td>
-                <td>25</td>
-                <td>26</td>
-                <td>27</td>
-                <td>28</td>
-                <td>29</td>
-            </tr>
-            <tr class="days">
-                <td>30</td>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-            </tr>
-        </table>
+        <div class="calendar">
+            <div class="calendar-header">
+                <button id="prev-month">‹</button>
+                <div id="month-year"></div>
+                <button id="next-month">›</button>
+            </div>
+            <div class="calendar-body">
+                <div class="calendar-weekdays">
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                    <div>Sun</div>
+                </div>
+                <div class="calendar-dates"></div>
+            </div>
+        </div>
         <div class="events-container">
             <h2>Events</h2>
             <div class="events-list">
@@ -92,7 +41,8 @@
                     <br>
                     <button onclick="accordion()">Show more</button>
                     <div class="more-info">
-                        <img src="/images/festive-toy-swap.png">
+                        <img src="images/festive-toy-swap.png">
+                    </div>
                     </div>
                 </div>
                 <div class="event-item">
@@ -116,5 +66,59 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const calendarDates = document.querySelector('.calendar-dates');
+        const monthYear = document.getElementById('month-year');
+        const prevMonthBtn = document.getElementById('prev-month');
+        const nextMonthBtn = document.getElementById('next-month');
+
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+
+        const months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        function renderCalendar(month, year) {
+        calendarDates.innerHTML = '';
+        monthYear.textContent = `${months[month]} ${year}`;
+        const firstDay = (new Date(year, month, 1).getDay() + 6)%7;
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        for (let i = 0; i < firstDay; i++) {
+            const blank = document.createElement('div');
+            calendarDates.appendChild(blank);
+        }
+        for (let i = 1; i <= daysInMonth; i++) {
+            const day = document.createElement('div');
+            day.textContent = i;
+            calendarDates.appendChild(day);
+        }
+        }
+        renderCalendar(currentMonth, currentYear);
+        prevMonthBtn.addEventListener('click', () => {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar(currentMonth, currentYear);
+        });
+
+        nextMonthBtn.addEventListener('click', () => {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        renderCalendar(currentMonth, currentYear);
+        });
+
+    function accordion(){
+    document.querySelector('.more-info').classList.toggle('active');
+}
+    </script>
 </body>
 </html>
