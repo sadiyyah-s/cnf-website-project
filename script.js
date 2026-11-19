@@ -1,3 +1,4 @@
+
 var accord = document.getElementsByClassName('accordian');
 var lastOpened = [];
 
@@ -6,8 +7,14 @@ for (let i = 0; i < accord.length; i++) {
 
         this.classList.toggle('active');
 
-        var Info = this.nextElementSibling;
+        // Find the information panel inside the same accordion item.
+        var Info = this.parentElement.querySelector('.Info');
         Info.classList.toggle('active');
+
+        this.setAttribute(
+            'aria-expanded',
+            this.classList.contains('active')
+        );
 
         lastOpened = lastOpened.filter(index => index !== i);
 
