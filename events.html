@@ -10,111 +10,200 @@
 <body>
     <script src="header.js"></script>
     <div class="container">
-        <table class="calendar">
-            <tr>
-                <th colspan="1">&lt;</th>
-                <th colspan="5" class="month-year">Nov 2026</th>
-                <th colspan="1">&gt;</th>
-            </tr>
-            <tr class="days-of-week">
-                <td>Mon</td>
-                <td>Tue</td>
-                <td>Wed</td>
-                <td>Thu</td>
-                <td>Fri</td>
-                <td>Sat</td>
-                <td>Sun</td>
-            </tr>
-            <tr class="days">
-                <td>26</td>
-                <td>27</td>
-                <td>28</td>
-                <td>29</td>
-                <td>30</td>
-                <td>31</td>
-                <td>1</td>
-            </tr>
-            <tr class="days">
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-                <td>8</td>
-            </tr>
-            <tr class="days">
-                <td>9</td>
-                <td>10</td>
-                <td>11</td>
-                <td>12</td>
-                <td>13</td>
-                <td>14</td>
-                <td>15</td>
-            </tr>
-            <tr class="days">
-                <td>16</td>
-                <td>17</td>
-                <td>18</td>
-                <td>19</td>
-                <td>20</td>
-                <td>21</td>
-                <td>22</td>
-            </tr>
-            <tr class="days">
-                <td>23</td>
-                <td>24</td>
-                <td>25</td>
-                <td>26</td>
-                <td>27</td>
-                <td>28</td>
-                <td>29</td>
-            </tr>
-            <tr class="days">
-                <td>30</td>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-            </tr>
-        </table>
+        <div class="calendar">
+            <div class="calendar-header">
+                <button id="prev-month">‹</button>
+                <div id="month-year"></div>
+                <button id="next-month">›</button>
+            </div>
+            <div class="calendar-body">
+                <div class="calendar-weekdays">
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                    <div>Sun</div>
+                </div>
+                <div class="calendar-dates"></div>
+            </div>
+        </div>
+
         <div class="events-container">
-            <h2>Events</h2>
+            <h2 id="events-heading">Events</h2>
+            <p id="no-events-msg" style="display: none;">No events found.</p>
+
             <div class="events-list">
                 <div class="event-item">
-                    <span class="event-date">14 Nov 2026</span>
+                    <span class="event-date"><time datetime="2026-11-14">14 Nov 2026</time></span>
                     <br>
                     <span class="event-title">Festive Toy Swap</span>
                     <br>
                     <span class="event-location">@LCB Depot Leicester</span>
                     <br>
-                    <button onclick="accordion()">Show more</button>
+                    <button onclick="accordion(this)">Show more</button>
                     <div class="more-info">
-                        <img src="/images/festive-toy-swap.png">
+                        <img src="images/festive-toy-swap.png" alt="Festive Toy Swap">
                     </div>
                 </div>
+
                 <div class="event-item">
-                    <span class="event-date">17 Nov 2026</span>
+                    <span class="event-date"><time datetime="2026-06-06">6 June 2026</time></span>
                     <br>
-                    <span class="event-title">Winter Festival</span>
+                    <span class="event-title">The Great Big Green Week</span>
                     <br>
-                    <span class="event-location">@LCB Depot Leicester</span>
+                    <span class="event-location">@ St Mary’s Church, Melton Mowbray</span>
                     <br>
-                    <button onclick="accordion()">Show more</button>
+                    <button onclick="accordion(this)">Show more</button>
+                    <div class="more-info">
+                        <img src="images/green-week.png" alt="Showcase of local community groups Come and hear from local community groups groups in our community that are working on conservation, reuse and recycling, community energy and climate justice. Each group will have an area to showcase what they are up to and representatives that you can find out more from. Saturday 6th June 10am to 4pm">
+                    </div>
                 </div>
+
                 <div class="event-item">
-                    <span class="event-date">23 Nov 2026</span>
+                    <span class="event-date"><time datetime="2026-11-23">23 Nov 2026</time></span>
                     <br>
                     <span class="event-title">Community Meetup</span>
                     <br>
                     <span class="event-location">@LCB Depot Leicester</span>
                     <br>
-                    <button onclick="accordion()">Show more</button>
+                    <button onclick="accordion(this)">Show more</button>
+                    <div class="more-info">
+                        <p>Community Meetup details go here.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        const calendarDates = document.querySelector('.calendar-dates');
+        const monthYear = document.getElementById('month-year');
+        const prevMonthBtn = document.getElementById('prev-month');
+        const nextMonthBtn = document.getElementById('next-month');
+        const eventItems = document.querySelectorAll('.event-item');
+        const noEventsMsg = document.getElementById('no-events-msg');
+        const eventsHeading = document.getElementById('events-heading');
+
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+        let selectedDate = null;
+
+        const months = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        const eventDates = new Set();
+        eventItems.forEach(item => {
+            const timeTag = item.querySelector('time');
+            if (timeTag) {
+                eventDates.add(timeTag.getAttribute('datetime'));
+            }
+        });
+
+        function formatDate(year, month, day) {
+            const m = String(month + 1).padStart(2, '0');
+            const d = String(day).padStart(2, '0');
+            return `${year}-${m}-${d}`;
+        }
+
+        function updateEventsDisplay() {
+            const monthPrefix = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
+            let visibleEvents = 0;
+
+            eventItems.forEach(item => {
+                const timeTag = item.querySelector('time');
+                const itemDate = timeTag ? timeTag.getAttribute('datetime') : '';
+
+                const shouldShow = selectedDate 
+                    ? itemDate === selectedDate 
+                    : itemDate.startsWith(monthPrefix);
+
+                item.style.display = shouldShow ? 'block' : 'none';
+                if (shouldShow) visibleEvents++;
+            });
+
+            if (selectedDate) {
+                const [y, m, d] = selectedDate.split('-');
+                eventsHeading.textContent = `Events on ${Number(d)} ${months[Number(m) - 1]} ${y}`;
+            } else {
+                eventsHeading.textContent = `Events in ${months[currentMonth]} ${currentYear}`;
+            }
+
+            noEventsMsg.style.display = visibleEvents === 0 ? 'block' : 'none';
+        }
+
+        function renderCalendar(month, year) {
+            calendarDates.innerHTML = '';
+            monthYear.textContent = `${months[month]} ${year}`;
+            
+            const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            for (let i = 0; i < firstDay; i++) {
+                const blank = document.createElement('div');
+                calendarDates.appendChild(blank);
+            }
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                const day = document.createElement('div');
+                day.textContent = i;
+
+                const dateString = formatDate(year, month, i);
+
+                if (eventDates.has(dateString)) {
+                    day.classList.add('has-event');
+                }
+
+                if (selectedDate === dateString) {
+                    day.classList.add('active-date');
+                }
+
+                day.addEventListener('click', () => {
+                    selectedDate = (selectedDate === dateString) ? null : dateString;
+                    renderCalendar(currentMonth, currentYear);
+                    updateEventsDisplay();
+                });
+
+                calendarDates.appendChild(day);
+            }
+        }
+
+        prevMonthBtn.addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            selectedDate = null;
+            renderCalendar(currentMonth, currentYear);
+            updateEventsDisplay();
+        });
+
+        nextMonthBtn.addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            selectedDate = null;
+            renderCalendar(currentMonth, currentYear);
+            updateEventsDisplay();
+        });
+
+        function accordion(button) {
+            const moreInfo = button.nextElementSibling;
+            if (moreInfo) {
+                moreInfo.classList.toggle('active');
+                button.textContent = moreInfo.classList.contains('active') ? 'Show less' : 'Show more';
+            }
+        }
+
+        renderCalendar(currentMonth, currentYear);
+        updateEventsDisplay();
+    </script>
 </body>
 </html>
