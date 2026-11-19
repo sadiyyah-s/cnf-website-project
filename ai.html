@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>In-Browser AI Chat</title>
+  <style>
+    *{ box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+      display: flex;
+      flex-direction: column;
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .brand { 
+      display: flex; 
+      flex-direction: column; 
+    }
+
+    .brand h1{ 
+      font-size: 16px; 
+      margin: 0; 
+      font-weight: 700; 
+      color: #111827; 
+    }
+
+    .brand span { 
+      font-size: 12px; color: #6b7280; 
+    }
+
+    .header-controls{ 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+      flex-wrap: wrap; 
+    }
+
+    .pill-select {
+      padding: 6px 10px;
+      font-size: 13px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      color: #374151;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    #newChatBtn {
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      color: #111827;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    #newChatBtn:hover{ 
+      background: #f3f4f6; 
+    }
+
+    #statusBanner{
+      background: #eff6ff;
+      border-bottom: 1px solid #dbeafe;
+      padding: 8px 20px;
+      font-size: 12px;
+      color: #1e40af;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    #progressContainer {
+      flex: 1;
+      max-width: 220px;
+      height: 6px;
+      background: #dbeafe;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    #progressBar { 
+      width: 0%; 
+      height: 100%; 
+      background: #2563eb; 
+      transition: width 0.2s ease; 
+    }
+
+    main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-container {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      flex: 1;
+    }
+
+    #welcomeScreen {
+      margin: auto;
+      text-align: center;
+      max-width: 480px;
+      padding: 20px;
+    }
+
+    #welcomeScreen h2{ 
+      font-size: 22px; 
+      margin: 0 0 8px; 
+      color: #111827; 
+    }
+
+    #welcomeScreen p{ 
+      font-size: 14px; 
+      color: #6b7280; 
+      margin: 0 0 20px; 
+    }
+
+    .starter-chips{ 
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 8px; 
+      justify-content: center; 
+    }
+
+    .chip{
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 13px;
+      color: #374151;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .chip:hover{ 
+      border-color: #2563eb; 
+      color: #2563eb; 
+      background: #eff6ff; 
+    }
+
+    .msg-row{ 
+      display: flex; 
+      gap: 10px; 
+      align-items: flex-end; 
+    }
+
+    .msg-row.user{ 
+      justify-content: flex-end; 
+    }
+
+    .msg-row.assistant{
+      justify-content: flex-start; 
+    }
+
+    .avatar{
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .bubble{
+      max-width: 78%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      font-size: 15px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .msg-row.user .bubble{
+      background: #2563eb;
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg-row.assistant .bubble{
+      background: #ffffff;
+      color: #111827;
+      border: 1px solid #e5e7eb;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    .bubble-actions{ 
+      margin-top: 6px; 
+      display: flex; 
+      gap: 8px; 
+    }
+
+    .copy-btn{
+      background: transparent;
+      border: none;
+      color: #6b7280;
+      font-size: 12px;
+      padding: 2px 6px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover{ 
+      background: #f3f4f6; 
+      color: #111827; 
+    }
+
+    footer{
+      background: #ffffff;
+      border-top: 1px solid #e5e7eb;
+      padding: 12px 16px 16px;
+      flex-shrink: 0;
+    }
+
+    .composer{
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      background: #f9fafb;
+      border: 1px solid #d1d5db;
+      border-radius: 16px;
+      padding: 8px 10px 8px 14px;
+    }
+
+    .composer:focus-within{
+      border-color: #2563eb;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    #prompt{
+      flex: 1;
+      border: none;
+      background: transparent;
+      resize: none;
+      font-family: inherit;
+      font-size: 15px;
+      line-height: 1.45;
+      max-height: 140px;
+      padding: 4px 0;
+      outline: none;
+      color: #111827;
+    }
+
+    .send-btn{
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+
+    .send-btn:hover:not(:disabled){ 
+      background: #1d4ed8; 
+    }
+
+    .send-btn:disabled{ 
+      background: #9ca3af; 
+      cursor: not-allowed; 
+    }
+
+    .send-btn.stop{ 
+      background: #dc2626; 
+    }
+
+    .send-btn.stop:hover{
+      background: #b91c1c; 
+    }
+
+    .hint{
+      text-align: center;
+      font-size: 11px; 
+      color: #9ca3af; 
+      margin-top: 6px; 
+    }
+
+    @media (max-width: 600px){
+      header{ 
+        flex-direction: column; 
+        align-items: stretch; 
+      }
+      .header-controls{
+        justify-content: space-between;
+      }
+      .bubble{
+        max-width: 86%; 
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <h1>Private AI Assistant</h1>
+      <span>100% on-device • Zero servers or API keys</span>
+    </div>
+    <div class="header-controls">
+      <select id="task" class="pill-select" title="Assistant Mode">
+        <option value="chat">General Chat</option>
+        <option value="social">Social Caption</option>
+        <option value="event">Event Blurb</option>
+      </select>
+      <select id="length" class="pill-select" title="Response Length">
+        <option value="short" selected>Short</option>
+        <option value="medium">Medium</option>
+        <option value="long">Detailed</option>
+      </select>
+      <button id="newChatBtn" type="button">+ New Chat</button>
+    </div>
+  </header>
+
+  <div id="statusBanner">
+    <span id="status">Checking device capabilities...</span>
+    <div id="progressContainer"><div id="progressBar"></div></div>
+  </div>
+
+  <main id="chatScrollArea">
+    <div class="chat-container" id="chatHistory">
+      <div id="welcomeScreen">
+        <h2>How can I help today?</h2>
+        <p>Everything runs privately inside your browser. Pick a starter below or type a message.</p>
+        <div class="starter-chips">
+          <button type="button" class="chip" data-mode="social" data-prompt="A sunny weekend coffee walk in the city">☕ Coffee walk caption</button>
+          <button type="button" class="chip" data-mode="event" data-prompt="Community summer night market on Friday at 6 PM with live music and food trucks">🎶 Summer night market</button>
+          <button type="button" class="chip" data-mode="chat" data-prompt="Give me 3 quick tips to stay focused while working from home">💡 Focus tips</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="composer">
+      <textarea id="prompt" rows="1" placeholder="Message AI Assistant..."></textarea>
+      <button id="actionBtn" class="send-btn" disabled>Loading...</button>
+    </div>
+    <div class="hint">Press Enter to send • Shift + Enter for a new line</div>
+  </footer>
+
+  <script type="module">
+    const statusEl = document.getElementById('status');
+    const statusBanner = document.getElementById('statusBanner');
+    const progressBar = document.getElementById('progressBar');
+    const progressContainer = document.getElementById('progressContainer');
+    const actionBtn = document.getElementById('actionBtn');
+    const newChatBtn = document.getElementById('newChatBtn');
+    const chatScrollArea = document.getElementById('chatScrollArea');
+    const chatHistoryEl = document.getElementById('chatHistory');
+    const welcomeScreen = document.getElementById('welcomeScreen');
+    const promptEl = document.getElementById('prompt');
+    const taskEl = document.getElementById('task');
+    const lengthEl = document.getElementById('length');
+
+    const systemPrompts = {
+      chat: "You are a helpful, friendly assistant. Respond strictly in English only. Never use Chinese or any other language. Answer clearly and directly without rambling.",
+      social: "You are a social media expert. Respond strictly in English only. Never use Chinese or any other language. Write a punchy, engaging social media caption with a hook and up to 3 relevant hashtags based on the user's input.",
+      event: "You are an event coordinator. Respond strictly in English only. Never use Chinese or any other language. Write an exciting event description with a catchy headline, key details, and a clear call-to-action."
+    };
+
+    const lengthInstructions = {
+      short: " Keep the entire response very brief: under 35 words (1 to 2 sentences maximum). Finish your final sentence cleanly.",
+      medium: " Keep the entire response to one concise paragraph (around 70 to 110 words). Finish your final sentence cleanly.",
+      long: " Provide a thorough, well-structured response (around 180 to 250 words) and finish every sentence cleanly."
+    };
+
+    const maxTokensByLength = { short: 90, medium: 220, long: 450 };
+
+    let generator = null;
+    let pipelineFn = null;
+    let TextStreamerClass = null;
+    let stoppingCriteria = null;
+    let isGenerating = false;
+    let activeDevice = 'wasm';
+    let conversationHistory = [];
+
+    function formatMarkdownSafe(rawText) {
+      return rawText
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    }
+
+    function scrollToBottom() {
+      chatScrollArea.scrollTop = chatScrollArea.scrollHeight;
+    }
+
+    function appendBubble(role, initialText = "") {
+      welcomeScreen.style.display = "none";
+
+      const row = document.createElement('div');
+      row.className = `msg-row ${role}`;
+
+      if (role === 'assistant') {
+        const avatar = document.createElement('div');
+        avatar.className = 'avatar';
+        avatar.textContent = 'AI';
+        row.appendChild(avatar);
+      }
+
+      const wrapper = document.createElement('div');
+      wrapper.style.maxWidth = '100%';
+      wrapper.style.display = 'flex';
+      wrapper.style.flexDirection = 'column';
+      wrapper.style.alignItems = role === 'user' ? 'flex-end' : 'flex-start';
+
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      if (role === 'user') {
+        bubble.textContent = initialText;
+      } else {
+        bubble.innerHTML = initialText ? formatMarkdownSafe(initialText) : '<em>Thinking...</em>';
+      }
+      wrapper.appendChild(bubble);
+
+      if (role === 'assistant') {
+        const actions = document.createElement('div');
+        actions.className = 'bubble-actions';
+        const copyBtn = document.createElement('button');
+        copyBtn.type = 'button';
+        copyBtn.className = 'copy-btn';
+        copyBtn.textContent = 'Copy';
+        copyBtn.addEventListener('click', async () => {
+          await navigator.clipboard.writeText(bubble.innerText);
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1500);
+        });
+        actions.appendChild(copyBtn);
+        wrapper.appendChild(actions);
+      }
+
+      row.appendChild(wrapper);
+      chatHistoryEl.appendChild(row);
+      scrollToBottom();
+      return bubble;
+    }
+    async function detectDeviceProfile() {
+      const deviceMemory = navigator.deviceMemory || 4;
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      let device = 'wasm';
+
+      if ('gpu' in navigator) {
+        try {
+          const adapter = await Promise.race([
+            navigator.gpu.requestAdapter(),
+            new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 1500))
+          ]);
+          if (adapter) device = 'webgpu';
+        } catch (e) {
+          device = 'wasm';
+        }
+      }
+
+      const useLiteWasm = (deviceMemory <= 3) || (isMobile && device === 'wasm');
+      if (useLiteWasm) {
+        return { device: 'wasm', modelId: 'HuggingFaceTB/SmolLM2-135M-Instruct', label: 'Lite' };
+      }
+
+      return {
+        device: device,
+        modelId: device === 'webgpu' ? 'onnx-community/Qwen2.5-0.5B-Instruct' : 'HuggingFaceTB/SmolLM2-360M-Instruct',
+        label: 'Standard'
+      };
+    }
+
+    async function loadModel(forceWasm = false) {
+      if (generator) {
+        await generator.dispose();
+        generator = null;
+      }
+
+      const profile = forceWasm
+        ? { device: 'wasm', modelId: 'HuggingFaceTB/SmolLM2-360M-Instruct', label: 'Safe Mode' }
+        : await detectDeviceProfile();
+
+      activeDevice = profile.device;
+      statusBanner.style.display = 'flex';
+      progressContainer.style.display = 'block';
+      progressBar.style.width = '0%';
+      statusEl.textContent = `Loading ${profile.label} model (${profile.device.toUpperCase()})...`;
+
+      generator = await pipelineFn('text-generation', profile.modelId, {
+        dtype: 'q4',
+        device: profile.device,
+        progress_callback: (info) => {
+          if (info.status === 'progress' && info.file.endsWith('.onnx')) {
+            const pct = Math.round(info.progress);
+            progressBar.style.width = `${pct}%`;
+            const loadedMB = (info.loaded / 1024 / 1024).toFixed(0);
+            const totalMB = (info.total / 1024 / 1024).toFixed(0);
+            statusEl.textContent = `Downloading ${profile.label} model: ${pct}% (${loadedMB} MB / ${totalMB} MB)`;
+          } else if (info.status === 'ready') {
+            progressBar.style.width = '100%';
+            statusEl.textContent = `Ready (${profile.label} • ${profile.device.toUpperCase()})`;
+            setTimeout(() => {
+              progressContainer.style.display = 'none';
+            }, 1200);
+          }
+        }
+      });
+    }
+
+    async function initAI() {
+      try {
+        statusEl.textContent = "Starting local AI engine...";
+        const { pipeline, env, TextStreamer, InterruptableStoppingCriteria } = await import('./transformers.min.js');
+        pipelineFn = pipeline;
+        TextStreamerClass = TextStreamer;
+        stoppingCriteria = new InterruptableStoppingCriteria();
+
+        env.backends.onnx.wasm.numThreads = 1;
+        env.backends.onnx.wasm.proxy = false;
+
+        await loadModel(false);
+
+        actionBtn.disabled = false;
+        actionBtn.textContent = "Send";
+      } catch (err) {
+        statusEl.textContent = `Could not load AI on this browser: ${err.message}`;
+        console.error(err);
+      }
+    }
+
+    initAI();
+
+    function autoResizeTextarea() {
+      promptEl.style.height = 'auto';
+      promptEl.style.height = Math.min(promptEl.scrollHeight, 140) + 'px';
+    }
+
+    promptEl.addEventListener('input', autoResizeTextarea);
+
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        if (!generator || isGenerating) return;
+        taskEl.value = chip.dataset.mode;
+        promptEl.value = chip.dataset.prompt;
+        autoResizeTextarea();
+        runGeneration(false);
+      });
+    });
+
+    newChatBtn.addEventListener('click', () => {
+      if (isGenerating && stoppingCriteria) {
+        stoppingCriteria.interrupt();
+      }
+      conversationHistory = [];
+      chatHistoryEl.innerHTML = "";
+      chatHistoryEl.appendChild(welcomeScreen);
+      welcomeScreen.style.display = "block";
+      promptEl.value = "";
+      autoResizeTextarea();
+      promptEl.focus();
+    });
+
+    async function runGeneration(isRetry = false, retryUserText = null, retryBubbleEl = null) {
+      if (isGenerating && !isRetry) {
+        if (stoppingCriteria) stoppingCriteria.interrupt();
+        return;
+      }
+
+      const userText = isRetry ? retryUserText : promptEl.value.trim();
+      if (!userText || !generator) return;
+
+      isGenerating = true;
+      actionBtn.textContent = "Stop";
+      actionBtn.classList.add('stop');
+
+      let aiBubbleEl = retryBubbleEl;
+      if (!isRetry) {
+        appendBubble('user', userText);
+        aiBubbleEl = appendBubble('assistant', '');
+        conversationHistory.push({ role: "user", content: userText });
+        promptEl.value = "";
+        autoResizeTextarea();
+      }
+
+      stoppingCriteria.reset();
+
+      const selectedLength = lengthEl.value;
+      const combinedSystemPrompt = systemPrompts[taskEl.value] + lengthInstructions[selectedLength];
+      const recentContext = conversationHistory.slice(-6);
+      const messages = [
+        { role: "system", content: combinedSystemPrompt },
+        ...recentContext
+      ];
+
+      let rawAssistantReply = "";
+
+      const streamer = new TextStreamerClass(generator.tokenizer, {
+        skip_prompt: true,
+        skip_special_tokens: true,
+        callback_function: (tokenText) => {
+          const cleanText = tokenText.replace(/[\u4E00-\u9FFF\u3400-\u4DBF]/g, '');
+          rawAssistantReply += cleanText;
+          aiBubbleEl.innerHTML = formatMarkdownSafe(rawAssistantReply);
+          scrollToBottom();
+        }
+      });
+
+      try {
+        await generator(messages, {
+          max_new_tokens: maxTokensByLength[selectedLength],
+          do_sample: true,
+          temperature: 0.5,
+          repetition_penalty: 1.05,
+          streamer: streamer,
+          stopping_criteria: [stoppingCriteria]
+        });
+
+        conversationHistory.push({ role: "assistant", content: rawAssistantReply });
+      } catch (err) {
+        console.error(err);
+        if (!isRetry && activeDevice === 'webgpu') {
+          statusEl.textContent = "Switching to Safe Mode (WASM) for this browser...";
+          aiBubbleEl.textContent = "Optimizing for your browser, retrying...";
+          isGenerating = false;
+          await loadModel(true);
+          return runGeneration(true, userText, aiBubbleEl);
+        }
+        aiBubbleEl.textContent = `Generation error: ${err.message}`;
+      } finally {
+        isGenerating = false;
+        actionBtn.textContent = "Send";
+        actionBtn.classList.remove('stop');
+      }
+    }
+
+    actionBtn.addEventListener('click', () => runGeneration(false));
+
+    promptEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        runGeneration(false);
+      }
+    });
+
+    window.addEventListener('beforeunload', async () => {
+      if (generator) {
+        await generator.dispose();
+      }
+    });
+  </script>
+</body>
+</html>
