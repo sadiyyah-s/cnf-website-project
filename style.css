@@ -1,3 +1,4 @@
+
 body {
     margin: 0;
     padding: 0;
@@ -20,9 +21,13 @@ body {
 }
 
 .header h3 {
+    position: absolute;
+    left: 48%;
+    transform: translateX(-50%);
     display: block;
     font-size: 60px;
-    margin: auto;
+    margin: 0;
+    white-space: nowrap;
 }
 
 .color1 {
@@ -40,7 +45,6 @@ body {
 .menu {
     margin-left: auto;
     margin-right: 100px;
-    position: relative;
     display: inline-flex;
     flex-direction: column;
     width: auto;
@@ -64,22 +68,23 @@ body {
 .button {
     position: relative;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    min-width: 3.5rem;
+    min-width: 5.25rem;
     width: 100%;
-    height: 3.25rem;
-    padding: 12px 10px;
+    height: 4.875rem;
+    padding: 18px 15px;
     background: #000c2a;
     box-sizing: border-box;
-    border-radius: 0.75rem;
+    border-radius: 1.125rem;
     transition: padding 0.2s ease;
 }
 
+
 .menu.active .button {
     border-radius: 0.75rem 0.75rem 0 0;
-    padding: 12px 15px; 
+    padding: 12px 15px;
 }
 
 .button:hover {
@@ -103,13 +108,12 @@ body {
 }
 
 .button .bar {
-    width: 2rem;
-    height: 0.25rem;
+    width: 3rem;
+    height: 0.375rem;
     background-color: ivory;
     border-radius: 0.5rem;
     transition: all 0.3s ease-in-out;
 }
-
 
 .menu.active .bar {
     position: absolute;
@@ -118,7 +122,6 @@ body {
     margin-top: -0.125rem;
     margin-left: -1rem;
 }
-
 
 .menu.active .bar1 {
     transform: translate(0, 0) rotate(45deg);
@@ -150,9 +153,8 @@ body {
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
-    transition: max-height 0.4s ease, padding 0.4s ease,opacity 0.3s ease, transform 0.3s ease,visibility 0.3s ease;
+    transition: max-height 0.4s ease, padding 0.4s ease, opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
     box-sizing: border-box;
-    position: absolute;
     z-index: 1002;
 }
 
@@ -268,48 +270,60 @@ hr {
 }
 
 .Info {
-    width: 85%;
-    margin: 0 auto 15px;
+    width: 100%;
+    margin: 15px 0 0;
     padding: 0;
-    margin-top: 20px;
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr);
     align-items: stretch;
     background-color: transparent;
     color: black;
-    border: 2px solid transparent;
+    border: none;
     border-radius: 15px;
-    box-shadow: none;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease, background-color 0.5s ease;
+    transition: max-height 0.5s ease;
 }
 
 .Info.active {
     max-height: 1000px;
-    border-color: #4D4B59;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
     z-index: 11;
 }
 
 .information {
-    flex: 0 0 60%;
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
     box-sizing: border-box;
-    padding: 10px;
-    text-align: left;
+    padding: 30px;
+    margin: 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 2px solid #4D4B59;
+    border-radius: 15px;
 }
 
 .image {
-    flex: 1;
+    grid-column: 3;
+    grid-row: 1;
     min-width: 0;
+    min-height: 250px;
+    margin: 8px;
     position: relative;
     overflow: hidden;
+    background-color: white;
+    border: 2px solid #4D4B59;
+    border-radius: 15px;
 }
 
 .image img {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -337,52 +351,113 @@ main u h1 {
     --Bcolour-3: #e8e1ca;
 }
 
-.accordian:nth-of-type(3n+1) b {
-    color: var(--text-1);
-}
-
-.accordian:nth-of-type(3n+2) b {
-    color: var(--text-2);
-}
-
-.accordian:nth-of-type(3n+3) b {
-    color: var(--text-3);
-}
-
-.Info.active:nth-of-type(3n+1) {
-    background-color: var(--colour-1);
-}
-
-.Info.active:nth-of-type(3n+2) {
-    background-color: var(--colour-2);
-}
-
-.Info.active:nth-of-type(3n+3) {
-    background-color: var(--colour-3);
-}
-
 .Centraliser {
     width: 90%;
-    margin: 3px auto 0;
-    margin-top: 0;
-    padding-top: 20px;
+    margin: 0 auto;
+    padding: 40px 0;
     background-color: #F8FAF7;
     border: 2px solid black;
     border-radius: 15px;
     text-align: center;
     transition: background-color 0.5s ease;
+    position: relative;
+    display: block;
+    overflow: visible;
 }
 
-.accordian:hover:nth-of-type(3n+1) {
-    background-color: var(--colour-1);
+.Centraliser::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    bottom: 20px;
+    left: 50%;
+    width: 3px;
+    background-color: #4D4B59;
+    transform: translateX(-50%);
+    border-radius: 10px;
 }
 
-.accordian:hover:nth-of-type(3n+2) {
-    background-color: var(--colour-2);
+.accordion-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr);
+    align-items: start;
+    width: 100%;
+    margin-bottom: 35px;
 }
 
-.accordian:hover:nth-of-type(3n+3) {
-    background-color: var(--colour-3);
+.accordion-item:last-child {
+    margin-bottom: 0;
+}
+
+.accordion-item::before {
+    content: "";
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border: 3px solid #4D4B59;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    box-sizing: content-box;
+    z-index: 12;
+}
+
+.accordion-item:nth-child(odd) .accordian {
+    grid-column: 1;
+}
+
+.accordion-item:nth-child(even) .accordian {
+    grid-column: 3;
+}
+
+.accordion-item .accordian {
+    width: 95%;
+    margin: 0 auto;
+}
+
+.accordion-item .Info {
+    grid-column: 1 / 4;
+    width: 95%;
+    margin: 15px auto 0;
+    box-sizing: border-box;
+}
+
+.accordion-item:nth-child(odd) .information,
+.accordion-item:nth-child(even) .image {
+    grid-column: 1;
+}
+
+.accordion-item:nth-child(odd) .image,
+.accordion-item:nth-child(even) .information {
+    grid-column: 3;
+}
+
+.accordion-item:nth-child(3n+1) {
+    --item-colour: var(--colour-1);
+    --item-text: var(--text-1);
+}
+
+.accordion-item:nth-child(3n+2) {
+    --item-colour: var(--colour-2);
+    --item-text: var(--text-2);
+}
+
+.accordion-item:nth-child(3n+3) {
+    --item-colour: var(--colour-3);
+    --item-text: var(--text-3);
+}
+
+.accordion-item .accordian b {
+    color: var(--item-text);
+}
+
+.accordion-item .accordian:hover,
+.accordion-item .Info.active .information,
+.accordion-item .Info.active .image {
+    background-color: var(--item-colour);
 }
 
 .Centraliser.colour-1 {
@@ -408,10 +483,12 @@ body.colour-2 {
 body.colour-3 {
     background-color: var(--Bcolour-3);
 }
-.navbar ul li:hover{
+
+.navbar ul li:hover {
     transition: 0.2s;
     background-color: #92bad8;
 }
+
 body::before {
     content: "";
     position: fixed;
@@ -434,4 +511,46 @@ body:has(.Info.active)::before {
 .Info {
     position: relative;
     z-index: 11;
+}
+
+@media (max-width: 700px) {
+    .Centraliser {
+        padding: 30px 0;
+    }
+
+    .Centraliser::before {
+        left: 15px;
+    }
+
+    .accordion-item {
+        grid-template-columns: 35px minmax(0, 1fr);
+        margin-bottom: 25px;
+    }
+
+    .accordion-item::before {
+        left: 15px;
+    }
+
+    .accordion-item:nth-child(odd) .accordian,
+    .accordion-item:nth-child(even) .accordian,
+    .accordion-item .Info {
+        grid-column: 2;
+    }
+
+    .accordion-item .Info {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .accordion-item .information,
+    .accordion-item .image {
+        grid-column: 1;
+    }
+
+    .information {
+        min-height: 220px;
+    }
+
+    .image {
+        height: 220px;
+    }
 }
