@@ -20,7 +20,8 @@ body {
 }
 
 .header img {
-    height: 200px;;
+    width:20%;
+    max-width:140px;
 }
 
 .header h3 {
