@@ -1,8 +1,28 @@
-
 var accord = document.getElementsByClassName('accordian');
 var lastOpened = [];
 
+function updateBackground() {
+
+    document.querySelector('.Centraliser').classList.remove(
+        'colour-1', 'colour-2', 'colour-3'
+    );
+
+    document.body.classList.remove(
+        'colour-1', 'colour-2', 'colour-3'
+    );
+
+    if (lastOpened.length > 0) {
+
+        let latest = lastOpened[lastOpened.length - 1];
+        let colour = `colour-${(latest % 3) + 1}`;
+
+        document.querySelector('.Centraliser').classList.add(colour);
+        document.body.classList.add(colour);
+    }
+}
+
 for (let i = 0; i < accord.length; i++) {
+
     accord[i].addEventListener('click', function() {
 
         this.classList.toggle('active');
@@ -22,50 +42,28 @@ for (let i = 0; i < accord.length; i++) {
             lastOpened.push(i);
         }
 
-        document.querySelector('.Centraliser').classList.remove(
-            'colour-1', 'colour-2', 'colour-3'
-        );
-
-        document.body.classList.remove(
-            'colour-1', 'colour-2', 'colour-3'
-        );
-
-        if (lastOpened.length > 0) {
-            let latest = lastOpened[lastOpened.length - 1];
-            let colour = `colour-${(latest % 3) + 1}`;
-
-            document.querySelector('.Centraliser').classList.add(colour);
-            document.body.classList.add(colour);
-        }
+        updateBackground();
     });
 }
 
+// Close all accordion sections.
+document.querySelectorAll(".closeAll").forEach(function (button) {
 
-async function askAI(message) {
-  try {
-    const response = await fetch(
-      "https://my-groq-api.jackmcsnoop.workers.dev",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          message: message
-        })
-      }
-    );
+    button.addEventListener("click", function () {
 
-    const data = await response.json();
+        for (let i = 0; i < accord.length; i++) {
 
-    if (!response.ok) {
-      throw new Error(data.error || "AI request failed");
-    }
+            accord[i].classList.remove('active');
 
-    return data.reply;
+            accord[i].setAttribute('aria-expanded', 'false');
 
-  } catch (error) {
-    console.error("AI Error:", error);
-    return "Sorry, something went wrong connecting to the AI.";
-  }
-}
+            var Info = accord[i].parentElement.querySelector('.Info');
+
+            Info.classList.remove('active');
+        }
+
+        lastOpened = [];
+
+        updateBackground();
+    });
+});
