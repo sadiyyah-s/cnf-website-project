@@ -39,3 +39,33 @@ for (let i = 0; i < accord.length; i++) {
         }
     });
 }
+
+
+async function askAI(message) {
+  try {
+    const response = await fetch(
+      "https://my-groq-api.jackmcsnoop.workers.dev",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: message
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "AI request failed");
+    }
+
+    return data.reply;
+
+  } catch (error) {
+    console.error("AI Error:", error);
+    return "Sorry, something went wrong connecting to the AI.";
+  }
+}
