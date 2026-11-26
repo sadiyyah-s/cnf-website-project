@@ -230,9 +230,8 @@ body {
 
 .calendar-weekdays div, .calendar-dates div{
     text-align: center;
-    padding: 10px;
-    font-size: 20px;
-    padding:20px;
+    font-size: clamp(0.25rem, 0.5rem + 2.5vw, 1rem);
+    padding:clamp(0.5rem, 2vw, 3rem);
 }
 
 .calendar-weekdays div{
