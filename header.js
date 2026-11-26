@@ -21,7 +21,7 @@ document.body.insertAdjacentHTML('afterbegin',`
             </label>
 
             <ul class="menu-list">
-                <a href="home.html"><li>Home</li></a>
+                <a href="index.html"><li>Home</li></a>
                 <a href="finance.html"><li>Finance</li></a>
                 <a href="survey.html"><li>Survey</li></a>
                 <a href="template.html"><li>Templates</li></a>
