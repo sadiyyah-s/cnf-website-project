@@ -17,17 +17,15 @@ body {
 }
 
 .header img {
-    height: 200px;
+    width:20%;
+    max-width:140px;
 }
 
 .header h3 {
-    position: absolute;
-    left: 48%;
-    transform: translateX(-50%);
     display: block;
-    font-size: 60px;
-    margin: 0;
-    white-space: nowrap;
+    font-size: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
+    margin: auto;
+    padding-right: 40px;
 }
 
 .color1 {
@@ -43,18 +41,18 @@ body {
 }
 
 .menu {
-    margin-left: auto;
-    margin-right: 100px;
+    position: absolute;
+    right:0;
+    margin-right:5px;
     display: inline-flex;
-    flex-direction: column;
+    flex-direction: row;
     width: auto;
     height: auto;
     background: #000c2a;
     border-radius: 0.75rem;
     overflow: visible;
     transition: border-radius 0.2s ease;
-    position: relative;
-    z-index: 1001;
+    flex-shrink: 0; 
 }
 
 .menu.active {
