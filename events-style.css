@@ -28,7 +28,7 @@ body {
     display: block;
     font-size: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
     margin: auto;
-    padding-right: 40px;
+    padding-right: 8vw;
 }
 
 .color1 {
