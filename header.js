@@ -1,6 +1,6 @@
 document.body.insertAdjacentHTML('afterbegin',`
     <div class="header">
-        <img src="/images/logo.png">
+        <img src="images/logo.png">
         <h3>
             <span class="color1">Communities </span>
             <span class="color2">Network </span>
