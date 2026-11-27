@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Phone Number Form</title>
+
+  <!-- Country dropdown styling -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .iti {
+      width: 100%;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0 18px;
+      box-sizing: border-box;
+    }
+
+    button {
+      padding: 12px 24px;
+      background: #222;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <form id="phoneForm">
+
+    <label for="phone">Phone Number</label>
+
+    <input
+      type="tel"
+      id="phone"
+      name="phone"
+      placeholder="Enter phone number"
+      required
+    >
+
+    <input
+      type="hidden"
+      id="fullPhone"
+      name="full_phone"
+    >
+
+    <button type="submit">Submit</button>
+
+    <p id="message"></p>
+
+  </form>
+
+  <!-- Country dropdown library -->
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
+
+  <script>
+    const phoneInput = document.querySelector("#phone");
+
+    const iti = window.intlTelInput(phoneInput, {
+      initialCountry: "gb",
+      separateDialCode: true,
+      nationalMode: true,
+      utilsScript:
+        "https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js"
+    });
+
+    document.getElementById("phoneForm")
+      .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        const message = document.getElementById("message");
+
+        if (!iti.isValidNumber()) {
+          message.textContent =
+            "Please enter a valid phone number.";
+          message.style.color = "red";
+          return;
+        }
+
+        const fullNumber = iti.getNumber();
+
+        document.getElementById("fullPhone").value =
+          fullNumber;
+
+        message.textContent =
+          "Phone number: " + fullNumber;
+
+        message.style.color = "green";
+
+        console.log("Full international number:", fullNumber);
+
+      });
+  </script>
+
+</body>
+</html>
+
+  

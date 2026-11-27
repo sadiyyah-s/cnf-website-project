@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe to mailing list</title>
+</head>
+<body>
+    <div class="header">
+        <h1> Subscribe To Newsletter</h1>
+        <h2>Sign Up for news and Events</h2>
+    </div>
+    <form action="submission.php" method="post">
+        <fieldset>
+            <div class="title">
+                <label for="title">Title</label>
+                <select id="usertitle">
+                    <option selected>Title</option>
+                    <details closed>
+                        <option value="Mr">Mr</option>
+                        <option value="Mrs">Mrs</option>
+                        <option value="Miss">Miss</option>
+                        <option value="Ms">Dr</option>
+                        <option value="Ms">Barr</option>
+                        <option value="Ms">Ms</option>
+                    </details> 
+                </select>
+            </div>
+            <br>
+        
+        <label for="fname">First Name*</label>
+        <input type="text" id="fname" placeholder="Enter First Name" required><br><br>
+
+        <label for="lname">Last Name*</label>
+        <input type="text" id="lname" placeholder="Enter Last Name" required><br><br>
+
+        <label for="email">Email*</label>
+        <input type="text" id="email" placeholder="example@gmail.com" required><br><br>
+
+        <label>Phone Number</label>
+        <input id="phone" type="tel" name="phone" required><br><br>
+
+        <!-- <label for="phoneno">Phone Number</label>
+        <input type="text" id="phoneno" placeholder="Enter Phone number" ><br><br> -->
+
+        <label for="dob">Date of birth*</label>
+        <input type="date" id="dob" placeholder="DD/MM/YYYY" required><br><br>
+
+        <label for="address">Address*</label><br>
+        <textarea name="Address" id="address" cols="30" rows="10"></textarea><br><br>
+
+        <label for="address">postcode*</label>
+        <input type="Postcode" id="phoneno" placeholder="Enter Phone number" ><br><br>
+
+        <button type="submit">Subscribe</button>
+        </fieldset>
+    </form>
+</body>
+<script src="script.js"></script>
+</html>
