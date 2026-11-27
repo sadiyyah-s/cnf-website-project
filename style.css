@@ -17,20 +17,15 @@ body {
 }
 
 .header img {
-    width: 20%;
-    max-width: 140px;
-    height: 200px;
-    object-fit: contain;
+    width:20%;
+    max-width:140px;
 }
 
 .header h3 {
-    position: absolute;
-    left: 48%;
-    transform: translateX(-50%);
     display: block;
     font-size: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
-    margin: 0;
-    white-space: nowrap;
+    margin: auto;
+    padding-right: 40px;
 }
 
 .color1 {
@@ -46,19 +41,18 @@ body {
 }
 
 .menu {
-    margin-left: auto;
-    margin-right: 100px;
+    position: absolute;
+    right:0;
+    margin-right:5px;
     display: inline-flex;
-    flex-direction: column;
+    flex-direction: row;
     width: auto;
     height: auto;
     background: #000c2a;
     border-radius: 0.75rem;
     overflow: visible;
     transition: border-radius 0.2s ease;
-    position: relative;
-    z-index: 1001;
-    flex-shrink: 0;
+    flex-shrink: 0; 
 }
 
 .menu.active {
@@ -84,6 +78,7 @@ body {
     border-radius: 1.125rem;
     transition: padding 0.2s ease;
 }
+
 
 .menu.active .button {
     border-radius: 0.75rem 0.75rem 0 0;
@@ -162,7 +157,7 @@ body {
 }
 
 .menu-list.active {
-    max-height: 400px;
+    max-height: fit-content;
     padding: 10px 15px;
     opacity: 1;
     visibility: visible;
