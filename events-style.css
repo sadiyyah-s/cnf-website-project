@@ -11,7 +11,7 @@ body {
 
 .header {
     display: flex;
-    height: 200px;
+    height: auto;
     background-color: white;
     align-items: center;
     width:100%;

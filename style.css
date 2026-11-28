@@ -8,12 +8,11 @@ body {
 
 .header {
     display: flex;
-    height: 200px;
+    height: auto;
     background-color: white;
     align-items: center;
-    position: relative;
-    z-index: 1000;
-    overflow: visible;
+    padding: 1rem;
+    box-sizing: border-box;
 }
 
 .header img {
